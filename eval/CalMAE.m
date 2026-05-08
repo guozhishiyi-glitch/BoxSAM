@@ -1,7 +1,7 @@
 function mae = CalMAE(smap, gtImg)
 % Code Author: Wangjiang Zhu
 % Email: wangjiang88119@gmail.com
-% Date: 3/24/2014
+
 if size(smap, 1) ~= size(gtImg, 1) || size(smap, 2) ~= size(gtImg, 2)
     error('Saliency map and gt Image have different sizes!\n');
 end

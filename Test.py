@@ -17,12 +17,12 @@ opt = parser.parse_args()
 model = Network().cuda()
 model.load_state_dict(torch.load(opt.model_path))
 model.eval()
-for dataset in ['SBU']:
+for dataset in ['']:
     save_path = '/data/New/biye/result/shadow/{}/'.format(dataset)
     os.makedirs(save_path, exist_ok=True)
-    test_loader = test_dataset1(image_root='/data/lxr/data/Shadow/Test/{}/Imgs/'.format(dataset),
-                               gt_root='/data/lxr/data/Shadow/Test/{}/GT/'.format(dataset),
-                               edge_root='/data/lxr/data/Shadow/Test/{}/GT/'.format(dataset),
+    test_loader = test_dataset1(image_root='/Test/{}/Imgs/'.format(dataset),
+                               gt_root='/Test/{}/GT/'.format(dataset),
+                               edge_root='/Test/{}/GT/'.format(dataset),
                                testsize=opt.testsize)
     img_count = 1 
     for iteration in range(test_loader.size):

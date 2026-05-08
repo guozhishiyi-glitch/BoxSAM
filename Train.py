@@ -196,7 +196,7 @@ if __name__ == '__main__':
                               trainsize=opt.trainsize,
                               num_workers=4)
     val_loader = test_dataset(image_root=opt.val_root + '/',
-                              gt_root=opt.val_root + '',
+                              gt_root=opt.val_root + '/',
                               testsize=opt.trainsize)
     total_step = len(train_loader)
 

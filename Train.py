@@ -152,7 +152,7 @@ if __name__ == '__main__':
     parser.add_argument('--load', type=str, default=None, help='train from checkpoints')
     parser.add_argument('--train_root', type=str, default='/data',
                         help='the training rgb images root')
-    parser.add_argument('--val_root', type=str, default='/data/lxr/data/Shadow/Test/ISTD/',
+    parser.add_argument('--val_root', type=str, default='',
                         help='the test rgb images root')
     parser.add_argument('--gpu_id', type=str, default='0',
                         help='train use gpu')
@@ -161,7 +161,7 @@ if __name__ == '__main__':
     parser.add_argument('--save_epoch', type=int, default=50,
                         help='every N epochs save your trained snapshot')
 
-    parser.add_argument('--save_path', type=str, default='/data/New/biye/pth/shad/',
+    parser.add_argument('--save_path', type=str, default='',
                         help='the path to save model and log')
 
     opt = parser.parse_args()
@@ -189,14 +189,14 @@ if __name__ == '__main__':
 
     # load data
     print('load data...')
-    train_loader = get_loader(image_root=opt.train_root + '/lxr/data/Shadow/Train/Imgs_jpg/',
-                              gt_root=opt.train_root + '/lxr/data/Shadow/Train/GT/',
-                              edge_root=opt.train_root + '/lxr/data/Shadow/Train/GT/',
+    train_loader = get_loader(image_root=opt.train_root + '',
+                              gt_root=opt.train_root + '',
+                              edge_root=opt.train_root + '',
                               batchsize=opt.batchsize,
                               trainsize=opt.trainsize,
                               num_workers=4)
-    val_loader = test_dataset(image_root=opt.val_root + 'Imgs_jpg/',
-                              gt_root=opt.val_root + 'GT/',
+    val_loader = test_dataset(image_root=opt.val_root + '/',
+                              gt_root=opt.val_root + '',
                               testsize=opt.trainsize)
     total_step = len(train_loader)
 

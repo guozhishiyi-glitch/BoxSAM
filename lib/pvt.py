@@ -221,74 +221,55 @@ class Network(nn.Module):
         x2 = pvt[1]
         x3 = pvt[2]
         x4 = pvt[3]
-        #print(f"x1-------: {x1.shape}")
-        #print(f"x2-------: {x2.shape}")
-        #print(f"x3-------: {x3.shape}")
-        #print(f"x4-------: {x4.shape}")
+        
 
         x2_t = self.Translayer2_1(x2)
         x3_t = self.Translayer3_1(x3)
         x4_t = self.Translayer4_1(x4)
         x1_t = x1
-        
-        #print(f"x2_tCEMqian-------: {x2_t.shape}")
-        #print(f"x3_tCEMqian-------: {x3_t.shape}")
-        #print(f"x4_tCEMqian-------: {x4_t.shape}")
-        #print(f"x1_tCEMqian-------: {x1_t.shape}")
+    
 
         x1 = self.ca(x1) * x1
-        #print(f"x1-------: {x1.shape}")
+       
         F2 = self.sa(x1) * x1
-        #print(f"F2-------: {F2.shape}")
-        # F2 = x1
+  
+       
         x3_t_feed = torch.cat((x3_t, self.upsample(x4_t)), 1)
         x2_t_feed = torch.cat((x2_t, self.upsample(x3_t_feed)), 1)
-        #print(f"x3_t_feed-------: {x3_t_feed.shape}")
-        #print(f"x2_t_feed-------: {x2_t_feed.shape}")
+       
 
         F1 = self.conv4(x2_t_feed)
-        #print(f"F1-------: {F1.shape}")
+       
         F1 = self.up2(F1)
 
 
         F2 = self.Translayer2_0(F2)
-        #print(f"F1-------: {F1.shape}")
-        #print(f"F2-------: {F2.shape}")
+       
 
         cmd = F1 + F2
-        #print(f"cmd-------: {F1.shape}")
+       
         cmd = self.linearr5(cmd)
-        #print(f"cmd-------: {cmd.shape}")
+        
         
 
         C_1 = self.cem0(x1_t)
         C_2 = self.cem1(x2_t)
         C_3 = self.cem2(x3_t)
         C_4 = self.cem3(x4_t)
-        #print(f"C_1CEMhou------: {C_1.shape}")
-        #print(f"C_2CEMhou------: {C_2.shape}")
-        #print(f"C_3CEMhou------: {C_3.shape}")
-        #print(f"C_4CEMhou------: {C_4.shape}")
+        
         G5 = F.interpolate(cmd, size=image_shape, mode='bilinear')
         E22 = F.interpolate(C_2, scale_factor=2, mode='bilinear')
         E23 = F.interpolate(C_3, scale_factor=4, mode='bilinear')
         E24 = F.interpolate(C_4, scale_factor=8, mode='bilinear')
         
-        #print(f"E22------C_2resizeMFAMqian: {E22.shape}")
-        #print(f"E23------C_3resizeMFAMqian: {E23.shape}")
-        #print(f"E24------C_4resizeMFAMqian: {E24.shape}")
+        
 
         M_4 = E24
         M_3 = self.FF3(E23, M_4, cmd)
         M_2 = self.FF2(E22, M_3, cmd)
         M_1 = self.FF1(C_1, M_2, cmd)
         
-        #print(f"M_4------M_4resizeMFAMhou: {M_4.shape}")
-        #print(f"M_3------M_3resizeMFAMhou: {M_3.shape}")
-        #print(f"M_2------M_2resizeMFAMhou: {M_2.shape}")
-        #print(f"M_1------M_1resizeMFAMhou: {M_1.shape}")
-
-        # map_4 = self.linearr4(M_4)
+        
         map_3 = self.linearr3(M_3)
         map_2 = self.linearr2(M_2)
         map_1 = self.linearr1(M_1)
@@ -296,7 +277,7 @@ class Network(nn.Module):
         G1 = F.interpolate(map_1, size=image_shape, mode='bilinear')
         G2 = F.interpolate(map_2, size=image_shape, mode='bilinear')
         G3 = F.interpolate(map_3, size=image_shape, mode='bilinear')
-        # G4 = F.interpolate(map_4, size=image_shape, mode='bilinear')
+       
 
         return G1, G2, G3, G5
 

@@ -31,7 +31,7 @@ def clip_gradient(optimizer, grad_clip):
     """
     recalibrate the misdirection in the training
     :param optimizer:
-    :param grad_clip:
+    
     :return:
     """
     for group in optimizer.param_groups:
